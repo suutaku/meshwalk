@@ -10,7 +10,7 @@
 	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.CameraControls = {}, global.three));
 })(this, (function (exports, three) { 'use strict';
 
-	const vec3$1 = new three.Vector3();
+	const vec3$2 = new three.Vector3();
 	class ComputedTriangle extends three.Triangle {
 	    constructor(a, b, c) {
 	        super(a, b, c);
@@ -29,7 +29,7 @@
 	    // 	this.boundingSphere = undefined;
 	    // }
 	    extend(amount) {
-	        const incenter = getIncenter(this, vec3$1);
+	        const incenter = getIncenter(this, vec3$2);
 	        const a = incenter.distanceTo(this.a);
 	        const b = incenter.distanceTo(this.b);
 	        const c = incenter.distanceTo(this.c);
@@ -120,25 +120,9 @@
 	    return bs;
 	}
 
-	const vec3 = new three.Vector3();
-	const vec3_0 = new three.Vector3();
-	const vec3_1 = new three.Vector3();
-	new three.Sphere();
-	new three.Line3();
-	class Intersection {
-	    constructor() {
-	        this.point = new three.Vector3();
-	        this.normal = new three.Vector3();
-	        this.depth = 0;
-	    }
-	    set(point, normal, depth) {
-	        this.point.copy(point);
-	        this.normal.copy(normal);
-	        this.depth = depth;
-	    }
-	}
+	const vec3$1 = new three.Vector3();
 	// https://3dkingdoms.com/weekly/weekly.php?a=3
-	function isIntersectionLineBox(line, box, hit) {
+	function intersectsLineBox(line, box, hit) {
 	    if (line.end.x < box.min.x && line.start.x < box.min.x)
 	        return false;
 	    if (line.end.x > box.max.x && line.start.x > box.max.x)
@@ -157,7 +141,7 @@
 	        hit && hit.copy(line.start);
 	        return true;
 	    }
-	    const _hit = vec3;
+	    const _hit = vec3$1;
 	    if ((getIntersection(line.start.x - box.min.x, line.end.x - box.min.x, line.start, line.end, _hit) && inBox(_hit, box, 1)) ||
 	        (getIntersection(line.start.y - box.min.y, line.end.y - box.min.y, line.start, line.end, _hit) && inBox(_hit, box, 2)) ||
 	        (getIntersection(line.start.z - box.min.z, line.end.z - box.min.z, line.start, line.end, _hit) && inBox(_hit, box, 3)) ||
@@ -175,9 +159,9 @@
 	    if (dst1 == dst2)
 	        return false;
 	    if (hit) {
-	        vec3.subVectors(p2, p1);
-	        vec3.multiplyScalar(-dst1 / (dst2 - dst1));
-	        hit.addVectors(p1, vec3);
+	        vec3$1.subVectors(p2, p1);
+	        vec3$1.multiplyScalar(-dst1 / (dst2 - dst1));
+	        hit.addVectors(p1, vec3$1);
 	    }
 	    return true;
 	}
@@ -190,95 +174,8 @@
 	        return true;
 	    return false;
 	}
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Plane();
-	const A = new three.Vector3();
-	const B = new three.Vector3();
-	const C = new three.Vector3();
-	const V = new three.Vector3();
-	const AB = new three.Vector3();
-	const BC = new three.Vector3();
-	const CA = new three.Vector3();
-	const Q1 = new three.Vector3();
-	const Q2 = new three.Vector3();
-	const Q3 = new three.Vector3();
-	const QC = new three.Vector3();
-	const QA = new three.Vector3();
-	const QB = new three.Vector3();
-	const negatedNormal = new three.Vector3();
-	// sphere: <THREE.Sphere>
-	// a: <THREE.Vector3>, // vertex of a triangle
-	// b: <THREE.Vector3>, // vertex of a triangle
-	// c: <THREE.Vector3>, // vertex of a triangle
-	// normal: <THREE.Vector3>, // normal of a triangle
-	function isIntersectionSphereTriangle(sphere, a, b, c, normal, out) {
-	    // http://realtimecollisiondetection.net/blog/?p=103
-	    // vs plain of triangle face
-	    A.subVectors(a, sphere.center);
-	    B.subVectors(b, sphere.center);
-	    C.subVectors(c, sphere.center);
-	    const rr = sphere.radius * sphere.radius;
-	    V.crossVectors(vec3_0.subVectors(B, A), vec3_1.subVectors(C, A));
-	    const d = A.dot(V);
-	    const e = V.dot(V);
-	    if (d * d > rr * e) {
-	        return false;
-	    }
-	    // vs triangle vertex
-	    const aa = A.dot(A);
-	    const ab = A.dot(B);
-	    const ac = A.dot(C);
-	    const bb = B.dot(B);
-	    const bc = B.dot(C);
-	    const cc = C.dot(C);
-	    if ((aa > rr) && (ab > aa) && (ac > aa) ||
-	        (bb > rr) && (ab > bb) && (bc > bb) ||
-	        (cc > rr) && (ac > cc) && (bc > cc)) {
-	        return false;
-	    }
-	    // vs edge
-	    AB.subVectors(B, A);
-	    BC.subVectors(C, B);
-	    CA.subVectors(A, C);
-	    const d1 = ab - aa;
-	    const d2 = bc - bb;
-	    const d3 = ac - cc;
-	    const e1 = AB.dot(AB);
-	    const e2 = BC.dot(BC);
-	    const e3 = CA.dot(CA);
-	    Q1.subVectors(A.multiplyScalar(e1), AB.multiplyScalar(d1));
-	    Q2.subVectors(B.multiplyScalar(e2), BC.multiplyScalar(d2));
-	    Q3.subVectors(C.multiplyScalar(e3), CA.multiplyScalar(d3));
-	    QC.subVectors(C.multiplyScalar(e1), Q1);
-	    QA.subVectors(A.multiplyScalar(e2), Q2);
-	    QB.subVectors(B.multiplyScalar(e3), Q3);
-	    if ((Q1.dot(Q1) > rr * e1 * e1) && (Q1.dot(QC) >= 0) ||
-	        (Q2.dot(Q2) > rr * e2 * e2) && (Q2.dot(QA) >= 0) ||
-	        (Q3.dot(Q3) > rr * e3 * e3) && (Q3.dot(QB) >= 0)) {
-	        return false;
-	    }
-	    const distance = Math.sqrt(d * d / e) - sphere.radius - 1;
-	    negatedNormal.set(-normal.x, -normal.y, -normal.z);
-	    const contactPoint = sphere.center.clone().add(negatedNormal.multiplyScalar(distance));
-	    out.set(contactPoint, normal, distance);
-	    return true;
-	}
+
+	const vec3 = new three.Vector3();
 	// // based on Real-Time Collision Detection Section 5.3.4
 	// // p: <THREE.Vector3>, // line3.start
 	// // q: <THREE.Vector3>, // line3.end
@@ -292,7 +189,7 @@
 	// const au = new Vector3();
 	// const bv = new Vector3();
 	// const cw = new Vector3();
-	// export function testLineTriangle( p: Vector3, q: Vector3, a: Vector3, b: Vector3, c: Vector3, hit: Vector3 ) {
+	// export function intersectsLineTriangle( p: Vector3, q: Vector3, a: Vector3, b: Vector3, c: Vector3, hit: Vector3 ) {
 	// 	pq.subVectors( q, p );
 	// 	pa.subVectors( a, p );
 	// 	pb.subVectors( b, p );
@@ -333,7 +230,7 @@
 	const au = new three.Vector3();
 	const bv = new three.Vector3();
 	const cw = new three.Vector3();
-	function testLineTriangle(p, q, a, b, c, hit) {
+	function intersectsLineTriangle(p, q, a, b, c, hit) {
 	    ab.subVectors(b, a);
 	    ac.subVectors(c, a);
 	    qp.subVectors(p, q);
@@ -365,23 +262,6 @@
 	    hit.copy(au).add(bv).add(cw);
 	    return true;
 	}
-	//
-	// based on https://github.com/mrdoob/three.js/blob/master/examples/jsm/math/Octree.js
-	// https://wickedengine.net/2020/04/26/capsule-collision-detection/
-	// we select the closest point on the capsule line to the triangle,
-	// place a sphere on that point and then perform the sphere – triangle test.
-	// also
-	// 5.1.10
-	new three.Vector3();
-	new three.Plane();
-	new three.Line3();
-	new three.Line3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
-	new three.Vector3();
 
 	const _v1 = new three.Vector3();
 	const _v2$1 = new three.Vector3();
@@ -454,7 +334,7 @@
 	    getLineTriangles(line, result) {
 	        for (let i = 0; i < this.subTrees.length; i++) {
 	            const subTree = this.subTrees[i];
-	            if (!isIntersectionLineBox(line, subTree.box))
+	            if (!intersectsLineBox(line, subTree.box))
 	                continue;
 	            if (subTree.triangles.length > 0) {
 	                for (let j = 0; j < subTree.triangles.length; j++) {
@@ -526,7 +406,7 @@
 	        this.getLineTriangles(line, triangles);
 	        for (let i = 0; i < triangles.length; i++) {
 	            const result = _v1;
-	            const isIntersected = testLineTriangle(line.start, line.end, triangles[i].a, triangles[i].b, triangles[i].c, result);
+	            const isIntersected = intersectsLineTriangle(line.start, line.end, triangles[i].a, triangles[i].b, triangles[i].c, result);
 	            if (isIntersected) {
 	                const newDistanceSquared = line.start.distanceToSquared(result);
 	                if (distanceSquared > newDistanceSquared) {
@@ -652,6 +532,104 @@
 	        }
 	    }
 	};
+
+	class Intersection {
+	    constructor() {
+	        this.point = new three.Vector3();
+	        this.normal = new three.Vector3();
+	        this.depth = 0;
+	    }
+	    set(point, normal, depth) {
+	        this.point.copy(point);
+	        this.normal.copy(normal);
+	        this.depth = depth;
+	    }
+	}
+
+	const vec3_0 = new three.Vector3();
+	const vec3_1 = new three.Vector3();
+	const A = new three.Vector3();
+	const B = new three.Vector3();
+	const C = new three.Vector3();
+	const V = new three.Vector3();
+	const AB = new three.Vector3();
+	const BC = new three.Vector3();
+	const CA = new three.Vector3();
+	const Q1 = new three.Vector3();
+	const Q2 = new three.Vector3();
+	const Q3 = new three.Vector3();
+	const QC = new three.Vector3();
+	const QA = new three.Vector3();
+	const QB = new three.Vector3();
+	const negatedNormal = new three.Vector3();
+	// Sphere vs Triangle
+	// 1. Triangle から Plane をつくる
+	// 2. Sphere の中心から Plane の距離を求める
+	// 3. 距離が Sphere の半径よりも大きければ、交差していないので return null
+	// 4. Sphere の中心を通る、Plane からの垂線の、Plane 上の座標を求める
+	// 5. その座標が Triangle の内側にあれば、交差している。return { position: 交差座標、 normal: triangle の法線、depth: 半径 - 距離 }
+	// 6. 外側の場合、Triangle の3つの辺（セグメント）と、Sphere との最近距離を求める
+	// 7. 最近距離が半径よりも大きければ、交差していないので return null
+	// 8. 交差している場合、最も近い辺の、セグメント上の最近距離のを求める。return { position: 交差座標、 normal: 点と中心の方向ベクトル、depth: 半径 - 距離 }
+	// 9. 例外は return null
+	//
+	// sphere: <THREE.Sphere>
+	// a: <THREE.Vector3>, // vertex of a triangle
+	// b: <THREE.Vector3>, // vertex of a triangle
+	// c: <THREE.Vector3>, // vertex of a triangle
+	// normal: <THREE.Vector3>, // normal of a triangle
+	function intersectsSphereTriangle(sphere, a, b, c, normal, out) {
+	    // http://realtimecollisiondetection.net/blog/?p=103
+	    // vs plain of triangle face
+	    A.subVectors(a, sphere.center);
+	    B.subVectors(b, sphere.center);
+	    C.subVectors(c, sphere.center);
+	    const rr = sphere.radius * sphere.radius;
+	    V.crossVectors(vec3_0.subVectors(B, A), vec3_1.subVectors(C, A));
+	    const d = A.dot(V);
+	    const e = V.dot(V);
+	    if (d * d > rr * e) {
+	        return false;
+	    }
+	    // vs triangle vertex
+	    const aa = A.dot(A);
+	    const ab = A.dot(B);
+	    const ac = A.dot(C);
+	    const bb = B.dot(B);
+	    const bc = B.dot(C);
+	    const cc = C.dot(C);
+	    if ((aa > rr) && (ab > aa) && (ac > aa) ||
+	        (bb > rr) && (ab > bb) && (bc > bb) ||
+	        (cc > rr) && (ac > cc) && (bc > cc)) {
+	        return false;
+	    }
+	    // vs edge
+	    AB.subVectors(B, A);
+	    BC.subVectors(C, B);
+	    CA.subVectors(A, C);
+	    const d1 = ab - aa;
+	    const d2 = bc - bb;
+	    const d3 = ac - cc;
+	    const e1 = AB.dot(AB);
+	    const e2 = BC.dot(BC);
+	    const e3 = CA.dot(CA);
+	    Q1.subVectors(A.multiplyScalar(e1), AB.multiplyScalar(d1));
+	    Q2.subVectors(B.multiplyScalar(e2), BC.multiplyScalar(d2));
+	    Q3.subVectors(C.multiplyScalar(e3), CA.multiplyScalar(d3));
+	    QC.subVectors(C.multiplyScalar(e1), Q1);
+	    QA.subVectors(A.multiplyScalar(e2), Q2);
+	    QB.subVectors(B.multiplyScalar(e3), Q3);
+	    if ((Q1.dot(Q1) > rr * e1 * e1) && (Q1.dot(QC) >= 0) ||
+	        (Q2.dot(Q2) > rr * e2 * e2) && (Q2.dot(QA) >= 0) ||
+	        (Q3.dot(Q3) > rr * e3 * e3) && (Q3.dot(QB) >= 0)) {
+	        return false;
+	    }
+	    const distance = Math.sqrt(d * d / e) - sphere.radius - 1;
+	    negatedNormal.set(-normal.x, -normal.y, -normal.z);
+	    const contactPoint = sphere.center.clone().add(negatedNormal.multiplyScalar(distance));
+	    out.set(contactPoint, normal, distance);
+	    return true;
+	}
 
 	const FALL_VELOCITY = -20;
 	const JUMP_DURATION = 1000;
@@ -845,7 +823,7 @@
 	            // 壁・天井は接地処理では無視
 	            if (triangle.normal.y <= 0)
 	                continue;
-	            const isIntersected = testLineTriangle(groundingHead, groundingTo, triangle.a, triangle.b, triangle.c, groundContactPointTmp);
+	            const isIntersected = intersectsLineTriangle(groundingHead, groundingTo, triangle.a, triangle.b, triangle.c, groundContactPointTmp);
 	            if (!isIntersected)
 	                continue;
 	            if (!groundContact) {
@@ -904,7 +882,7 @@
 	                triangle.computeBoundingSphere();
 	            if (!sphere$1.intersectsSphere(triangle.boundingSphere))
 	                continue;
-	            const isIntersected = isIntersectionSphereTriangle(sphere$1, triangle.a, triangle.b, triangle.c, triangle.normal, intersection);
+	            const isIntersected = intersectsSphereTriangle(sphere$1, triangle.a, triangle.b, triangle.c, triangle.normal, intersection);
 	            if (!isIntersected)
 	                continue;
 	            this.contactInfo.push({
@@ -1325,6 +1303,11 @@
 	    TOUCH_ZOOM_OFFSET: 16384,
 	    TOUCH_ZOOM_ROTATE: 32768,
 	});
+	const DOLLY_DIRECTION = {
+	    NONE: 0,
+	    IN: 1,
+	    OUT: -1,
+	};
 	function isPerspectiveCamera(camera) {
 	    return camera.isPerspectiveCamera;
 	}
@@ -1533,11 +1516,10 @@
 	    }
 	}
 
-	const VERSION = '2.3.4'; // will be replaced with `version` in package.json during the build process.
+	var _a;
+	const VERSION = '2.9.0'; // will be replaced with `version` in package.json during the build process.
 	const TOUCH_DOLLY_FACTOR = 1 / 8;
-	const isBrowser = typeof window !== 'undefined';
-	const isMac = isBrowser && /Mac/.test(navigator.platform);
-	const isPointerEventsNotSupported = !(isBrowser && 'PointerEvent' in window); // macOS Safari 12 does not support PointerEvents API
+	const isMac = /Mac/.test((_a = globalThis === null || globalThis === void 0 ? void 0 : globalThis.navigator) === null || _a === void 0 ? void 0 : _a.platform);
 	let THREE;
 	let _ORIGIN$1;
 	let _AXIS_Y;
@@ -1546,6 +1528,7 @@
 	let _v3A$1;
 	let _v3B$1;
 	let _v3C$1;
+	let _cameraDirection;
 	let _xColumn;
 	let _yColumn;
 	let _zColumn;
@@ -1610,6 +1593,7 @@
 	        _v3A$1 = new THREE.Vector3();
 	        _v3B$1 = new THREE.Vector3();
 	        _v3C$1 = new THREE.Vector3();
+	        _cameraDirection = new THREE.Vector3();
 	        _xColumn = new THREE.Vector3();
 	        _yColumn = new THREE.Vector3();
 	        _zColumn = new THREE.Vector3();
@@ -1701,20 +1685,20 @@
 	        this.maxAzimuthAngle = Infinity; // radians
 	        // How far you can dolly in and out ( PerspectiveCamera only )
 	        /**
-	         * Minimum distance for dolly. The value must be higher than `0`.
+	         * Minimum distance for dolly. The value must be higher than `0`. Default is `Number.EPSILON`.
 	         * PerspectiveCamera only.
 	         * @category Properties
 	         */
-	        this.minDistance = 0;
+	        this.minDistance = Number.EPSILON;
 	        /**
-	         * Maximum distance for dolly. The value must be higher than `minDistance`.
+	         * Maximum distance for dolly. The value must be higher than `minDistance`. Default is `Infinity`.
 	         * PerspectiveCamera only.
 	         * @category Properties
 	         */
 	        this.maxDistance = Infinity;
 	        /**
-	         * `true` to enable Infinity Dolly.
-	         * When the Dolly distance is less than the `minDistance`, radius of the sphere will be set `minDistance` automatically.
+	         * `true` to enable Infinity Dolly for wheel and pinch. Use this with `minDistance` and `maxDistance`
+	         * If the Dolly distance is less (or over) than the `minDistance` (or `maxDistance`), `infinityDolly` will keep the distance and pushes the target position instead.
 	         * @category Properties
 	         */
 	        this.infinityDolly = false;
@@ -1807,13 +1791,18 @@
 	        this._enabled = true;
 	        this._state = ACTION.NONE;
 	        this._viewport = null;
-	        this._dollyControlAmount = 0;
+	        this._changedDolly = 0;
+	        this._changedZoom = 0;
 	        this._hasRested = true;
 	        this._boundaryEnclosesCamera = false;
 	        this._needsUpdate = true;
 	        this._updatedLastTime = false;
 	        this._elementRect = new DOMRect();
+	        this._isDragging = false;
+	        this._dragNeedsUpdate = true;
 	        this._activePointers = [];
+	        this._lockedPointer = null;
+	        this._interactiveArea = new DOMRect(0, 0, 1, 1);
 	        // Use draggingSmoothTime over smoothTime while true.
 	        // set automatically true on user-dragging start.
 	        // set automatically false on programmable methods call.
@@ -1822,6 +1811,7 @@
 	        this._isUserControllingTruck = false;
 	        this._isUserControllingOffset = false;
 	        this._isUserControllingZoom = false;
+	        this._lastDollyDirection = DOLLY_DIRECTION.NONE;
 	        // velocities for smoothDamp
 	        this._thetaVelocity = { value: 0 };
 	        this._phiVelocity = { value: 0 };
@@ -1830,30 +1820,31 @@
 	        this._focalOffsetVelocity = new THREE.Vector3();
 	        this._zoomVelocity = { value: 0 };
 	        this._truckInternal = (deltaX, deltaY, dragToOffset) => {
+	            let truckX;
+	            let pedestalY;
 	            if (isPerspectiveCamera(this._camera)) {
 	                const offset = _v3A$1.copy(this._camera.position).sub(this._target);
 	                // half of the fov is center to top of screen
 	                const fov = this._camera.getEffectiveFOV() * DEG2RAD;
 	                const targetDistance = offset.length() * Math.tan(fov * 0.5);
-	                const truckX = (this.truckSpeed * deltaX * targetDistance / this._elementRect.height);
-	                const pedestalY = (this.truckSpeed * deltaY * targetDistance / this._elementRect.height);
-	                if (this.verticalDragToForward) {
-	                    dragToOffset ?
-	                        this.setFocalOffset(this._focalOffsetEnd.x + truckX, this._focalOffsetEnd.y, this._focalOffsetEnd.z, true) :
-	                        this.truck(truckX, 0, true);
-	                    this.forward(-pedestalY, true);
-	                }
-	                else {
-	                    dragToOffset ?
-	                        this.setFocalOffset(this._focalOffsetEnd.x + truckX, this._focalOffsetEnd.y + pedestalY, this._focalOffsetEnd.z, true) :
-	                        this.truck(truckX, pedestalY, true);
-	                }
+	                truckX = (this.truckSpeed * deltaX * targetDistance / this._elementRect.height);
+	                pedestalY = (this.truckSpeed * deltaY * targetDistance / this._elementRect.height);
 	            }
 	            else if (isOrthographicCamera(this._camera)) {
-	                // orthographic
 	                const camera = this._camera;
-	                const truckX = deltaX * (camera.right - camera.left) / camera.zoom / this._elementRect.width;
-	                const pedestalY = deltaY * (camera.top - camera.bottom) / camera.zoom / this._elementRect.height;
+	                truckX = deltaX * (camera.right - camera.left) / camera.zoom / this._elementRect.width;
+	                pedestalY = deltaY * (camera.top - camera.bottom) / camera.zoom / this._elementRect.height;
+	            }
+	            else {
+	                return;
+	            }
+	            if (this.verticalDragToForward) {
+	                dragToOffset ?
+	                    this.setFocalOffset(this._focalOffsetEnd.x + truckX, this._focalOffsetEnd.y, this._focalOffsetEnd.z, true) :
+	                    this.truck(truckX, 0, true);
+	                this.forward(-pedestalY, true);
+	            }
+	            else {
 	                dragToOffset ?
 	                    this.setFocalOffset(this._focalOffsetEnd.x + truckX, this._focalOffsetEnd.y + pedestalY, this._focalOffsetEnd.z, true) :
 	                    this.truck(truckX, pedestalY, true);
@@ -1866,30 +1857,34 @@
 	        };
 	        this._dollyInternal = (delta, x, y) => {
 	            const dollyScale = Math.pow(0.95, -delta * this.dollySpeed);
+	            const lastDistance = this._sphericalEnd.radius;
 	            const distance = this._sphericalEnd.radius * dollyScale;
-	            const prevRadius = this._sphericalEnd.radius;
-	            const signedPrevRadius = prevRadius * (delta >= 0 ? -1 : 1);
-	            this.dollyTo(distance);
-	            if (this.infinityDolly && (distance < this.minDistance || this.maxDistance === this.minDistance)) {
-	                this._camera.getWorldDirection(_v3A$1);
-	                this._targetEnd.add(_v3A$1.normalize().multiplyScalar(signedPrevRadius));
-	                this._target.add(_v3A$1.normalize().multiplyScalar(signedPrevRadius));
+	            const clampedDistance = clamp(distance, this.minDistance, this.maxDistance);
+	            const overflowedDistance = clampedDistance - distance;
+	            if (this.infinityDolly && this.dollyToCursor) {
+	                this._dollyToNoClamp(distance, true);
+	            }
+	            else if (this.infinityDolly && !this.dollyToCursor) {
+	                this.dollyInFixed(overflowedDistance, true);
+	                this._dollyToNoClamp(clampedDistance, true);
+	            }
+	            else {
+	                this._dollyToNoClamp(clampedDistance, true);
 	            }
 	            if (this.dollyToCursor) {
-	                this._dollyControlAmount += this._sphericalEnd.radius - prevRadius;
-	                if (this.infinityDolly && (distance < this.minDistance || this.maxDistance === this.minDistance)) {
-	                    this._dollyControlAmount -= signedPrevRadius;
-	                }
+	                this._changedDolly += (this.infinityDolly ? distance : clampedDistance) - lastDistance;
 	                this._dollyControlCoord.set(x, y);
 	            }
+	            this._lastDollyDirection = Math.sign(-delta);
 	        };
 	        this._zoomInternal = (delta, x, y) => {
 	            const zoomScale = Math.pow(0.95, delta * this.dollySpeed);
-	            const prevZoom = this._zoomEnd;
+	            const lastZoom = this._zoom;
+	            const zoom = this._zoom * zoomScale;
 	            // for both PerspectiveCamera and OrthographicCamera
-	            this.zoomTo(this._zoom * zoomScale);
+	            this.zoomTo(zoom, true);
 	            if (this.dollyToCursor) {
-	                this._dollyControlAmount += this._zoomEnd - prevZoom;
+	                this._changedZoom += zoom - lastZoom;
 	                this._dollyControlCoord.set(x, y);
 	            }
 	        };
@@ -1909,8 +1904,10 @@
 	        // rotation
 	        this._spherical = new THREE.Spherical().setFromVector3(_v3A$1.copy(this._camera.position).applyQuaternion(this._yAxisUpSpace));
 	        this._sphericalEnd = this._spherical.clone();
+	        this._lastDistance = this._spherical.radius;
 	        this._zoom = this._camera.zoom;
 	        this._zoomEnd = this._zoom;
+	        this._lastZoom = this._zoom;
 	        // collisionTest uses nearPlane.s
 	        this._nearPlaneCorners = [
 	            new THREE.Vector3(),
@@ -1927,7 +1924,6 @@
 	        this._position0 = this._camera.position.clone();
 	        this._zoom0 = this._zoom;
 	        this._focalOffset0 = this._focalOffset.clone();
-	        this._dollyControlAmount = 0;
 	        this._dollyControlCoord = new THREE.Vector2();
 	        // configs
 	        this.mouseButtons = {
@@ -1951,6 +1947,20 @@
 	        const onPointerDown = (event) => {
 	            if (!this._enabled || !this._domElement)
 	                return;
+	            if (this._interactiveArea.left !== 0 ||
+	                this._interactiveArea.top !== 0 ||
+	                this._interactiveArea.width !== 1 ||
+	                this._interactiveArea.height !== 1) {
+	                const elRect = this._domElement.getBoundingClientRect();
+	                const left = event.clientX / elRect.width;
+	                const top = event.clientY / elRect.height;
+	                // check if the interactiveArea contains the drag start position.
+	                if (left < this._interactiveArea.left ||
+	                    left > this._interactiveArea.right ||
+	                    top < this._interactiveArea.top ||
+	                    top > this._interactiveArea.bottom)
+	                    return;
+	            }
 	            // Don't call `event.preventDefault()` on the pointerdown event
 	            // to keep receiving pointermove evens outside dragging iframe
 	            // https://taye.me/blog/tips/2015/11/16/mouse-drag-outside-iframe/
@@ -1961,8 +1971,10 @@
 	                            null;
 	            if (mouseButton !== null) {
 	                const zombiePointer = this._findPointerByMouseButton(mouseButton);
-	                zombiePointer && this._activePointers.splice(this._activePointers.indexOf(zombiePointer), 1);
+	                zombiePointer && this._disposePointer(zombiePointer);
 	            }
+	            if ((event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT && this._lockedPointer)
+	                return;
 	            const pointer = {
 	                pointerId: event.pointerId,
 	                clientX: event.clientX,
@@ -1977,50 +1989,21 @@
 	            this._domElement.ownerDocument.removeEventListener('pointerup', onPointerUp);
 	            this._domElement.ownerDocument.addEventListener('pointermove', onPointerMove, { passive: false });
 	            this._domElement.ownerDocument.addEventListener('pointerup', onPointerUp);
-	            startDragging(event);
-	        };
-	        const onMouseDown = (event) => {
-	            if (!this._enabled || !this._domElement)
-	                return;
-	            const mouseButton = (event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT ? MOUSE_BUTTON.LEFT :
-	                (event.buttons & MOUSE_BUTTON.MIDDLE) === MOUSE_BUTTON.MIDDLE ? MOUSE_BUTTON.MIDDLE :
-	                    (event.buttons & MOUSE_BUTTON.RIGHT) === MOUSE_BUTTON.RIGHT ? MOUSE_BUTTON.RIGHT :
-	                        null;
-	            if (mouseButton !== null) {
-	                const zombiePointer = this._findPointerByMouseButton(mouseButton);
-	                zombiePointer && this._activePointers.splice(this._activePointers.indexOf(zombiePointer), 1);
-	            }
-	            const pointer = {
-	                pointerId: 0,
-	                clientX: event.clientX,
-	                clientY: event.clientY,
-	                deltaX: 0,
-	                deltaY: 0,
-	                mouseButton: (event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT ? MOUSE_BUTTON.LEFT :
-	                    (event.buttons & MOUSE_BUTTON.MIDDLE) === MOUSE_BUTTON.LEFT ? MOUSE_BUTTON.MIDDLE :
-	                        (event.buttons & MOUSE_BUTTON.RIGHT) === MOUSE_BUTTON.LEFT ? MOUSE_BUTTON.RIGHT :
-	                            null,
-	            };
-	            this._activePointers.push(pointer);
-	            // see https://github.com/microsoft/TypeScript/issues/32912#issuecomment-522142969
-	            // eslint-disable-next-line no-undef
-	            this._domElement.ownerDocument.removeEventListener('mousemove', onMouseMove);
-	            this._domElement.ownerDocument.removeEventListener('mouseup', onMouseUp);
-	            this._domElement.ownerDocument.addEventListener('mousemove', onMouseMove);
-	            this._domElement.ownerDocument.addEventListener('mouseup', onMouseUp);
+	            this._isDragging = true;
 	            startDragging(event);
 	        };
 	        const onPointerMove = (event) => {
 	            if (event.cancelable)
 	                event.preventDefault();
 	            const pointerId = event.pointerId;
-	            const pointer = this._findPointerById(pointerId);
+	            const pointer = this._lockedPointer || this._findPointerById(pointerId);
 	            if (!pointer)
 	                return;
 	            pointer.clientX = event.clientX;
 	            pointer.clientY = event.clientY;
 	            pointer.deltaX = event.movementX;
 	            pointer.deltaY = event.movementY;
+	            this._state = 0;
 	            if (event.pointerType === 'touch') {
 	                switch (this._activePointers.length) {
 	                    case 1:
@@ -2035,43 +2018,24 @@
 	                }
 	            }
 	            else {
-	                this._state = 0;
-	                if ((event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT) {
+	                if ((!this._isDragging && this._lockedPointer) ||
+	                    this._isDragging && (event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT) {
 	                    this._state = this._state | this.mouseButtons.left;
 	                }
-	                if ((event.buttons & MOUSE_BUTTON.MIDDLE) === MOUSE_BUTTON.MIDDLE) {
+	                if (this._isDragging && (event.buttons & MOUSE_BUTTON.MIDDLE) === MOUSE_BUTTON.MIDDLE) {
 	                    this._state = this._state | this.mouseButtons.middle;
 	                }
-	                if ((event.buttons & MOUSE_BUTTON.RIGHT) === MOUSE_BUTTON.RIGHT) {
+	                if (this._isDragging && (event.buttons & MOUSE_BUTTON.RIGHT) === MOUSE_BUTTON.RIGHT) {
 	                    this._state = this._state | this.mouseButtons.right;
 	                }
 	            }
 	            dragging();
 	        };
-	        const onMouseMove = (event) => {
-	            const pointer = this._findPointerById(0);
-	            if (!pointer)
-	                return;
-	            pointer.clientX = event.clientX;
-	            pointer.clientY = event.clientY;
-	            pointer.deltaX = event.movementX;
-	            pointer.deltaY = event.movementY;
-	            this._state = 0;
-	            if ((event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT) {
-	                this._state = this._state | this.mouseButtons.left;
-	            }
-	            if ((event.buttons & MOUSE_BUTTON.MIDDLE) === MOUSE_BUTTON.MIDDLE) {
-	                this._state = this._state | this.mouseButtons.middle;
-	            }
-	            if ((event.buttons & MOUSE_BUTTON.RIGHT) === MOUSE_BUTTON.RIGHT) {
-	                this._state = this._state | this.mouseButtons.right;
-	            }
-	            dragging();
-	        };
 	        const onPointerUp = (event) => {
-	            const pointerId = event.pointerId;
-	            const pointer = this._findPointerById(pointerId);
-	            pointer && this._activePointers.splice(this._activePointers.indexOf(pointer), 1);
+	            const pointer = this._findPointerById(event.pointerId);
+	            if (pointer && pointer === this._lockedPointer)
+	                return;
+	            pointer && this._disposePointer(pointer);
 	            if (event.pointerType === 'touch') {
 	                switch (this._activePointers.length) {
 	                    case 0:
@@ -2093,16 +2057,26 @@
 	            }
 	            endDragging();
 	        };
-	        const onMouseUp = () => {
-	            const pointer = this._findPointerById(0);
-	            pointer && this._activePointers.splice(this._activePointers.indexOf(pointer), 1);
-	            this._state = ACTION.NONE;
-	            endDragging();
-	        };
 	        let lastScrollTimeStamp = -1;
 	        const onMouseWheel = (event) => {
+	            if (!this._domElement)
+	                return;
 	            if (!this._enabled || this.mouseButtons.wheel === ACTION.NONE)
 	                return;
+	            if (this._interactiveArea.left !== 0 ||
+	                this._interactiveArea.top !== 0 ||
+	                this._interactiveArea.width !== 1 ||
+	                this._interactiveArea.height !== 1) {
+	                const elRect = this._domElement.getBoundingClientRect();
+	                const left = event.clientX / elRect.width;
+	                const top = event.clientY / elRect.height;
+	                // check if the interactiveArea contains the drag start position.
+	                if (left < this._interactiveArea.left ||
+	                    left > this._interactiveArea.right ||
+	                    top < this._interactiveArea.top ||
+	                    top > this._interactiveArea.bottom)
+	                    return;
+	            }
 	            event.preventDefault();
 	            if (this.dollyToCursor ||
 	                this.mouseButtons.wheel === ACTION.ROTATE ||
@@ -2150,19 +2124,15 @@
 	        const onContextMenu = (event) => {
 	            if (!this._domElement || !this._enabled)
 	                return;
-	            // contextmenu event is fired right after pointerdown/mousedown.
+	            // contextmenu event is fired right after pointerdown
 	            // remove attached handlers and active pointer, if interrupted by contextmenu.
 	            if (this.mouseButtons.right === CameraControls.ACTION.NONE) {
-	                const pointerId = event instanceof PointerEvent ? event.pointerId :
-	                    event instanceof MouseEvent ? 0 :
-	                        0;
+	                const pointerId = event instanceof PointerEvent ? event.pointerId : 0;
 	                const pointer = this._findPointerById(pointerId);
-	                pointer && this._activePointers.splice(this._activePointers.indexOf(pointer), 1);
+	                pointer && this._disposePointer(pointer);
 	                // eslint-disable-next-line no-undef
 	                this._domElement.ownerDocument.removeEventListener('pointermove', onPointerMove, { passive: false });
 	                this._domElement.ownerDocument.removeEventListener('pointerup', onPointerUp);
-	                this._domElement.ownerDocument.removeEventListener('mousemove', onMouseMove);
-	                this._domElement.ownerDocument.removeEventListener('mouseup', onMouseUp);
 	                return;
 	            }
 	            event.preventDefault();
@@ -2186,7 +2156,12 @@
 	                const y = (this._activePointers[0].clientY + this._activePointers[1].clientY) * 0.5;
 	                lastDragPosition.set(x, y);
 	            }
-	            if ('pointerType' in event && event.pointerType === 'touch') {
+	            this._state = 0;
+	            if (!event) {
+	                if (this._lockedPointer)
+	                    this._state = this._state | this.mouseButtons.left;
+	            }
+	            else if ('pointerType' in event && event.pointerType === 'touch') {
 	                switch (this._activePointers.length) {
 	                    case 1:
 	                        this._state = this.touches.one;
@@ -2200,8 +2175,7 @@
 	                }
 	            }
 	            else {
-	                this._state = 0;
-	                if ((event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT) {
+	                if (!this._lockedPointer && (event.buttons & MOUSE_BUTTON.LEFT) === MOUSE_BUTTON.LEFT) {
 	                    this._state = this._state | this.mouseButtons.left;
 	                }
 	                if ((event.buttons & MOUSE_BUTTON.MIDDLE) === MOUSE_BUTTON.MIDDLE) {
@@ -2254,14 +2228,16 @@
 	            this.dispatchEvent({ type: 'controlstart' });
 	        };
 	        const dragging = () => {
-	            if (!this._enabled)
+	            if (!this._enabled || !this._dragNeedsUpdate)
 	                return;
+	            this._dragNeedsUpdate = false;
 	            extractClientCoordFromEvent(this._activePointers, _v2);
 	            // When pointer lock is enabled clientX, clientY, screenX, and screenY remain 0.
 	            // If pointer lock is enabled, use the Delta directory, and assume active-pointer is not multiple.
-	            const isPointerLockActive = this._domElement && document.pointerLockElement === this._domElement;
-	            const deltaX = isPointerLockActive ? -this._activePointers[0].deltaX : lastDragPosition.x - _v2.x;
-	            const deltaY = isPointerLockActive ? -this._activePointers[0].deltaY : lastDragPosition.y - _v2.y;
+	            const isPointerLockActive = this._domElement && this._domElement.ownerDocument.pointerLockElement === this._domElement;
+	            const lockedPointer = isPointerLockActive ? this._lockedPointer || this._activePointers[0] : null;
+	            const deltaX = lockedPointer ? -lockedPointer.deltaX : lastDragPosition.x - _v2.x;
+	            const deltaY = lockedPointer ? -lockedPointer.deltaY : lastDragPosition.y - _v2.y;
 	            lastDragPosition.copy(_v2);
 	            if ((this._state & ACTION.ROTATE) === ACTION.ROTATE ||
 	                (this._state & ACTION.TOUCH_ROTATE) === ACTION.TOUCH_ROTATE ||
@@ -2330,14 +2306,60 @@
 	        const endDragging = () => {
 	            extractClientCoordFromEvent(this._activePointers, _v2);
 	            lastDragPosition.copy(_v2);
+	            this._dragNeedsUpdate = false;
+	            if (this._activePointers.length === 0 ||
+	                (this._activePointers.length === 1 && this._activePointers[0] === this._lockedPointer)) {
+	                this._isDragging = false;
+	            }
 	            if (this._activePointers.length === 0 && this._domElement) {
 	                // eslint-disable-next-line no-undef
 	                this._domElement.ownerDocument.removeEventListener('pointermove', onPointerMove, { passive: false });
-	                this._domElement.ownerDocument.removeEventListener('mousemove', onMouseMove);
 	                this._domElement.ownerDocument.removeEventListener('pointerup', onPointerUp);
-	                this._domElement.ownerDocument.removeEventListener('mouseup', onMouseUp);
 	                this.dispatchEvent({ type: 'controlend' });
 	            }
+	        };
+	        this.lockPointer = () => {
+	            if (!this._enabled || !this._domElement)
+	                return;
+	            this.cancel();
+	            // Element.requestPointerLock is allowed to happen without any pointer active - create a faux one for compatibility with controls
+	            this._lockedPointer = {
+	                pointerId: -1,
+	                clientX: 0,
+	                clientY: 0,
+	                deltaX: 0,
+	                deltaY: 0,
+	                mouseButton: null,
+	            };
+	            this._activePointers.push(this._lockedPointer);
+	            // eslint-disable-next-line no-undef
+	            this._domElement.ownerDocument.removeEventListener('pointermove', onPointerMove, { passive: false });
+	            this._domElement.ownerDocument.removeEventListener('pointerup', onPointerUp);
+	            this._domElement.requestPointerLock();
+	            this._domElement.ownerDocument.addEventListener('pointerlockchange', onPointerLockChange);
+	            this._domElement.ownerDocument.addEventListener('pointerlockerror', onPointerLockError);
+	            this._domElement.ownerDocument.addEventListener('pointermove', onPointerMove, { passive: false });
+	            this._domElement.ownerDocument.addEventListener('pointerup', onPointerUp);
+	            startDragging();
+	        };
+	        this.unlockPointer = () => {
+	            var _a, _b, _c;
+	            if (this._lockedPointer !== null) {
+	                this._disposePointer(this._lockedPointer);
+	                this._lockedPointer = null;
+	            }
+	            (_a = this._domElement) === null || _a === void 0 ? void 0 : _a.ownerDocument.exitPointerLock();
+	            (_b = this._domElement) === null || _b === void 0 ? void 0 : _b.ownerDocument.removeEventListener('pointerlockchange', onPointerLockChange);
+	            (_c = this._domElement) === null || _c === void 0 ? void 0 : _c.ownerDocument.removeEventListener('pointerlockerror', onPointerLockError);
+	            this.cancel();
+	        };
+	        const onPointerLockChange = () => {
+	            const isPointerLockActive = this._domElement && this._domElement.ownerDocument.pointerLockElement === this._domElement;
+	            if (!isPointerLockActive)
+	                this.unlockPointer();
+	        };
+	        const onPointerLockError = () => {
+	            this.unlockPointer();
 	        };
 	        this._addAllEventListeners = (domElement) => {
 	            this._domElement = domElement;
@@ -2345,7 +2367,6 @@
 	            this._domElement.style.userSelect = 'none';
 	            this._domElement.style.webkitUserSelect = 'none';
 	            this._domElement.addEventListener('pointerdown', onPointerDown);
-	            isPointerEventsNotSupported && this._domElement.addEventListener('mousedown', onMouseDown);
 	            this._domElement.addEventListener('pointercancel', onPointerUp);
 	            this._domElement.addEventListener('wheel', onMouseWheel, { passive: false });
 	            this._domElement.addEventListener('contextmenu', onContextMenu);
@@ -2357,7 +2378,6 @@
 	            this._domElement.style.userSelect = '';
 	            this._domElement.style.webkitUserSelect = '';
 	            this._domElement.removeEventListener('pointerdown', onPointerDown);
-	            this._domElement.removeEventListener('mousedown', onMouseDown);
 	            this._domElement.removeEventListener('pointercancel', onPointerUp);
 	            // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener#matching_event_listeners_for_removal
 	            // > it's probably wise to use the same values used for the call to `addEventListener()` when calling `removeEventListener()`
@@ -2367,9 +2387,9 @@
 	            this._domElement.removeEventListener('contextmenu', onContextMenu);
 	            // eslint-disable-next-line no-undef
 	            this._domElement.ownerDocument.removeEventListener('pointermove', onPointerMove, { passive: false });
-	            this._domElement.ownerDocument.removeEventListener('mousemove', onMouseMove);
 	            this._domElement.ownerDocument.removeEventListener('pointerup', onPointerUp);
-	            this._domElement.ownerDocument.removeEventListener('mouseup', onMouseUp);
+	            this._domElement.ownerDocument.removeEventListener('pointerlockchange', onPointerLockChange);
+	            this._domElement.ownerDocument.removeEventListener('pointerlockerror', onPointerLockError);
 	        };
 	        this.cancel = () => {
 	            if (this._state === ACTION.NONE)
@@ -2494,6 +2514,18 @@
 	    set boundaryEnclosesCamera(boundaryEnclosesCamera) {
 	        this._boundaryEnclosesCamera = boundaryEnclosesCamera;
 	        this._needsUpdate = true;
+	    }
+	    /**
+	     * Set drag-start, touches and wheel enable area in the domElement.
+	     * each values are between `0` and `1` inclusive, where `0` is left/top and `1` is right/bottom of the screen.
+	     * e.g. `{ x: 0, y: 0, width: 1, height: 1 }` for entire area.
+	     * @category Properties
+	     */
+	    set interactiveArea(interactiveArea) {
+	        this._interactiveArea.width = clamp(interactiveArea.width, 0, 1);
+	        this._interactiveArea.height = clamp(interactiveArea.height, 0, 1);
+	        this._interactiveArea.x = clamp(interactiveArea.x, 0, 1 - this._interactiveArea.width);
+	        this._interactiveArea.y = clamp(interactiveArea.y, 0, 1 - this._interactiveArea.height);
 	    }
 	    /**
 	     * Adds the specified event listener.
@@ -2647,25 +2679,47 @@
 	     */
 	    dollyTo(distance, enableTransition = false) {
 	        this._isUserControllingDolly = false;
+	        this._lastDollyDirection = DOLLY_DIRECTION.NONE;
+	        this._changedDolly = 0;
+	        return this._dollyToNoClamp(clamp(distance, this.minDistance, this.maxDistance), enableTransition);
+	    }
+	    _dollyToNoClamp(distance, enableTransition = false) {
 	        const lastRadius = this._sphericalEnd.radius;
-	        const newRadius = clamp(distance, this.minDistance, this.maxDistance);
 	        const hasCollider = this.colliderMeshes.length >= 1;
 	        if (hasCollider) {
 	            const maxDistanceByCollisionTest = this._collisionTest();
 	            const isCollided = approxEquals(maxDistanceByCollisionTest, this._spherical.radius);
-	            const isDollyIn = lastRadius > newRadius;
+	            const isDollyIn = lastRadius > distance;
 	            if (!isDollyIn && isCollided)
 	                return Promise.resolve();
-	            this._sphericalEnd.radius = Math.min(newRadius, maxDistanceByCollisionTest);
+	            this._sphericalEnd.radius = Math.min(distance, maxDistanceByCollisionTest);
 	        }
 	        else {
-	            this._sphericalEnd.radius = newRadius;
+	            this._sphericalEnd.radius = distance;
 	        }
 	        this._needsUpdate = true;
 	        if (!enableTransition) {
 	            this._spherical.radius = this._sphericalEnd.radius;
 	        }
 	        const resolveImmediately = !enableTransition || approxEquals(this._spherical.radius, this._sphericalEnd.radius, this.restThreshold);
+	        return this._createOnRestPromise(resolveImmediately);
+	    }
+	    /**
+	     * Dolly in, but does not change the distance between the target and the camera, and moves the target position instead.
+	     * Specify a negative value for dolly out.
+	     * @param distance Distance of dolly.
+	     * @param enableTransition Whether to move smoothly or immediately.
+	     * @category Methods
+	     */
+	    dollyInFixed(distance, enableTransition = false) {
+	        this._targetEnd.add(this._getCameraDirection(_cameraDirection).multiplyScalar(distance));
+	        if (!enableTransition) {
+	            this._target.copy(this._targetEnd);
+	        }
+	        const resolveImmediately = !enableTransition ||
+	            approxEquals(this._target.x, this._targetEnd.x, this.restThreshold) &&
+	                approxEquals(this._target.y, this._targetEnd.y, this.restThreshold) &&
+	                approxEquals(this._target.z, this._targetEnd.z, this.restThreshold);
 	        return this._createOnRestPromise(resolveImmediately);
 	    }
 	    /**
@@ -2693,6 +2747,7 @@
 	            this._zoom = this._zoomEnd;
 	        }
 	        const resolveImmediately = !enableTransition || approxEquals(this._zoom, this._zoomEnd, this.restThreshold);
+	        this._changedZoom = 0;
 	        return this._createOnRestPromise(resolveImmediately);
 	    }
 	    /**
@@ -2777,7 +2832,7 @@
 	    lookInDirectionOf(x, y, z, enableTransition = false) {
 	        const point = _v3A$1.set(x, y, z);
 	        const direction = point.sub(this._targetEnd).normalize();
-	        const position = direction.multiplyScalar(-this._sphericalEnd.radius);
+	        const position = direction.multiplyScalar(-this._sphericalEnd.radius).add(this._targetEnd);
 	        return this.setPosition(position.x, position.y, position.z, enableTransition);
 	    }
 	    /**
@@ -2876,10 +2931,10 @@
 	     */
 	    fitToSphere(sphereOrMesh, enableTransition) {
 	        const promises = [];
-	        const isSphere = sphereOrMesh instanceof THREE.Sphere;
-	        const boundingSphere = isSphere ?
-	            _sphere.copy(sphereOrMesh) :
-	            CameraControls.createBoundingSphere(sphereOrMesh, _sphere);
+	        const isObject3D = 'isObject3D' in sphereOrMesh;
+	        const boundingSphere = isObject3D ?
+	            CameraControls.createBoundingSphere(sphereOrMesh, _sphere) :
+	            _sphere.copy(sphereOrMesh);
 	        promises.push(this.moveTo(boundingSphere.center.x, boundingSphere.center.y, boundingSphere.center.z, enableTransition));
 	        if (isPerspectiveCamera(this._camera)) {
 	            const distanceToFit = this.getDistanceToFitSphere(boundingSphere.radius);
@@ -2910,6 +2965,8 @@
 	        this._isUserControllingRotate = false;
 	        this._isUserControllingDolly = false;
 	        this._isUserControllingTruck = false;
+	        this._lastDollyDirection = DOLLY_DIRECTION.NONE;
+	        this._changedDolly = 0;
 	        const target = _v3B$1.set(targetX, targetY, targetZ);
 	        const position = _v3A$1.set(positionX, positionY, positionZ);
 	        this._targetEnd.copy(target);
@@ -2951,6 +3008,8 @@
 	        this._isUserControllingRotate = false;
 	        this._isUserControllingDolly = false;
 	        this._isUserControllingTruck = false;
+	        this._lastDollyDirection = DOLLY_DIRECTION.NONE;
+	        this._changedDolly = 0;
 	        const targetA = _v3A$1.set(targetAX, targetAY, targetAZ);
 	        const positionA = _v3B$1.set(positionAX, positionAY, positionAZ);
 	        _sphericalA.setFromVector3(positionA.sub(targetA).applyQuaternion(this._yAxisUpSpace));
@@ -3002,7 +3061,7 @@
 	        const pos = this.getPosition(_v3A$1);
 	        const promise = this.setLookAt(pos.x, pos.y, pos.z, targetX, targetY, targetZ, enableTransition);
 	        // see https://github.com/yomotsu/camera-controls/issues/335
-	        this._sphericalEnd.phi = clamp(this.polarAngle, this.minPolarAngle, this.maxPolarAngle);
+	        this._sphericalEnd.phi = clamp(this._sphericalEnd.phi, this.minPolarAngle, this.maxPolarAngle);
 	        return promise;
 	    }
 	    /**
@@ -3121,31 +3180,44 @@
 	        return radius / (Math.sin(fov * 0.5));
 	    }
 	    /**
-	     * Returns its current gazing target, which is the center position of the orbit.
-	     * @param out current gazing target
+	     * Returns the orbit center position, where the camera looking at.
+	     * @param out The receiving Vector3 instance to copy the result
+	     * @param receiveEndValue Whether receive the transition end coords or current. default is `true`
 	     * @category Methods
 	     */
-	    getTarget(out) {
+	    getTarget(out, receiveEndValue = true) {
 	        const _out = !!out && out.isVector3 ? out : new THREE.Vector3();
-	        return _out.copy(this._targetEnd);
+	        return _out.copy(receiveEndValue ? this._targetEnd : this._target);
 	    }
 	    /**
-	     * Returns its current position.
-	     * @param out current position
+	     * Returns the camera position.
+	     * @param out The receiving Vector3 instance to copy the result
+	     * @param receiveEndValue Whether receive the transition end coords or current. default is `true`
 	     * @category Methods
 	     */
-	    getPosition(out) {
+	    getPosition(out, receiveEndValue = true) {
 	        const _out = !!out && out.isVector3 ? out : new THREE.Vector3();
-	        return _out.setFromSpherical(this._sphericalEnd).applyQuaternion(this._yAxisUpSpaceInverse).add(this._targetEnd);
+	        return _out.setFromSpherical(receiveEndValue ? this._sphericalEnd : this._spherical).applyQuaternion(this._yAxisUpSpaceInverse).add(receiveEndValue ? this._targetEnd : this._target);
 	    }
 	    /**
-	     * Returns its current focal offset, which is how much the camera appears to be translated in screen parallel coordinates.
-	     * @param out current focal offset
+	     * Returns the spherical coordinates of the orbit.
+	     * @param out The receiving Spherical instance to copy the result
+	     * @param receiveEndValue Whether receive the transition end coords or current. default is `true`
 	     * @category Methods
 	     */
-	    getFocalOffset(out) {
+	    getSpherical(out, receiveEndValue = true) {
+	        const _out = out || new THREE.Spherical();
+	        return _out.copy(receiveEndValue ? this._sphericalEnd : this._spherical);
+	    }
+	    /**
+	     * Returns the focal offset, which is how much the camera appears to be translated in screen parallel coordinates.
+	     * @param out The receiving Vector3 instance to copy the result
+	     * @param receiveEndValue Whether receive the transition end coords or current. default is `true`
+	     * @category Methods
+	     */
+	    getFocalOffset(out, receiveEndValue = true) {
 	        const _out = !!out && out.isVector3 ? out : new THREE.Vector3();
-	        return _out.copy(this._focalOffsetEnd);
+	        return _out.copy(receiveEndValue ? this._focalOffsetEnd : this._focalOffset);
 	    }
 	    /**
 	     * Normalize camera azimuth angle rotation between 0 and 360 degrees.
@@ -3156,6 +3228,15 @@
 	        if (this._sphericalEnd.theta < 0)
 	            this._sphericalEnd.theta += PI_2;
 	        this._spherical.theta += PI_2 * Math.round((this._sphericalEnd.theta - this._spherical.theta) / PI_2);
+	    }
+	    /**
+	     * stop all transitions.
+	     */
+	    stop() {
+	        this._focalOffset.copy(this._focalOffsetEnd);
+	        this._target.copy(this._targetEnd);
+	        this._spherical.copy(this._sphericalEnd);
+	        this._zoom = this._zoomEnd;
 	    }
 	    /**
 	     * Reset all rotation and position to defaults.
@@ -3207,7 +3288,7 @@
 	        const cameraDirection = _v3A$1.subVectors(this._target, this._camera.position).normalize();
 	        // So first find the vector off to the side, orthogonal to both this.object.up and
 	        // the "view" vector.
-	        const side = _v3B$1.crossVectors(cameraDirection, this._camera.up).normalize();
+	        const side = _v3B$1.crossVectors(cameraDirection, this._camera.up);
 	        // Then find the vector orthogonal to both this "side" vector and the "view" vector.
 	        // This vector will be the new "up" vector.
 	        this._camera.up.crossVectors(side, cameraDirection).normalize();
@@ -3280,45 +3361,6 @@
 	            smoothDampVec3(this._focalOffset, this._focalOffsetEnd, this._focalOffsetVelocity, smoothTime, this.maxSpeed, delta, this._focalOffset);
 	            this._needsUpdate = true;
 	        }
-	        if (this._dollyControlAmount !== 0) {
-	            if (isPerspectiveCamera(this._camera)) {
-	                const camera = this._camera;
-	                const cameraDirection = _v3A$1.setFromSpherical(this._spherical).applyQuaternion(this._yAxisUpSpaceInverse).normalize().negate();
-	                const planeX = _v3B$1.copy(cameraDirection).cross(camera.up).normalize();
-	                if (planeX.lengthSq() === 0)
-	                    planeX.x = 1.0;
-	                const planeY = _v3C$1.crossVectors(planeX, cameraDirection);
-	                const worldToScreen = this._sphericalEnd.radius * Math.tan(camera.getEffectiveFOV() * DEG2RAD * 0.5);
-	                const prevRadius = this._sphericalEnd.radius - this._dollyControlAmount;
-	                const lerpRatio = (prevRadius - this._sphericalEnd.radius) / this._sphericalEnd.radius;
-	                const cursor = _v3A$1.copy(this._targetEnd)
-	                    .add(planeX.multiplyScalar(this._dollyControlCoord.x * worldToScreen * camera.aspect))
-	                    .add(planeY.multiplyScalar(this._dollyControlCoord.y * worldToScreen));
-	                this._targetEnd.lerp(cursor, lerpRatio);
-	            }
-	            else if (isOrthographicCamera(this._camera)) {
-	                const camera = this._camera;
-	                const worldCursorPosition = _v3A$1.set(this._dollyControlCoord.x, this._dollyControlCoord.y, (camera.near + camera.far) / (camera.near - camera.far)).unproject(camera); //.sub( _v3B.set( this._focalOffset.x, this._focalOffset.y, 0 ) );
-	                const quaternion = _v3B$1.set(0, 0, -1).applyQuaternion(camera.quaternion);
-	                const cursor = _v3C$1.copy(worldCursorPosition).add(quaternion.multiplyScalar(-worldCursorPosition.dot(camera.up)));
-	                const prevZoom = this._zoom - this._dollyControlAmount;
-	                const lerpRatio = -(prevZoom - this._zoomEnd) / this._zoom;
-	                // find the "distance" (aka plane constant in three.js) of Plane
-	                // from a given position (this._targetEnd) and normal vector (cameraDirection)
-	                // https://www.maplesoft.com/support/help/maple/view.aspx?path=MathApps%2FEquationOfAPlaneNormal#bkmrk0
-	                const cameraDirection = _v3A$1.setFromSpherical(this._spherical).applyQuaternion(this._yAxisUpSpaceInverse).normalize().negate();
-	                const prevPlaneConstant = this._targetEnd.dot(cameraDirection);
-	                this._targetEnd.lerp(cursor, lerpRatio);
-	                const newPlaneConstant = this._targetEnd.dot(cameraDirection);
-	                // Pull back the camera depth that has moved, to be the camera stationary as zoom
-	                const pullBack = cameraDirection.multiplyScalar(newPlaneConstant - prevPlaneConstant);
-	                this._targetEnd.sub(pullBack);
-	            }
-	            this._target.copy(this._targetEnd);
-	            // target position may be moved beyond boundary.
-	            this._boundary.clampPoint(this._targetEnd, this._targetEnd);
-	            this._dollyControlAmount = 0;
-	        }
 	        // update zoom
 	        if (approxZero(deltaZoom)) {
 	            this._zoomVelocity.value = 0;
@@ -3328,12 +3370,75 @@
 	            const smoothTime = this._isUserControllingZoom ? this.draggingSmoothTime : this.smoothTime;
 	            this._zoom = smoothDamp(this._zoom, this._zoomEnd, this._zoomVelocity, smoothTime, Infinity, delta);
 	        }
+	        if (this.dollyToCursor) {
+	            if (isPerspectiveCamera(this._camera) && this._changedDolly !== 0) {
+	                const dollyControlAmount = this._spherical.radius - this._lastDistance;
+	                const camera = this._camera;
+	                const cameraDirection = this._getCameraDirection(_cameraDirection);
+	                const planeX = _v3A$1.copy(cameraDirection).cross(camera.up).normalize();
+	                if (planeX.lengthSq() === 0)
+	                    planeX.x = 1.0;
+	                const planeY = _v3B$1.crossVectors(planeX, cameraDirection);
+	                const worldToScreen = this._sphericalEnd.radius * Math.tan(camera.getEffectiveFOV() * DEG2RAD * 0.5);
+	                const prevRadius = this._sphericalEnd.radius - dollyControlAmount;
+	                const lerpRatio = (prevRadius - this._sphericalEnd.radius) / this._sphericalEnd.radius;
+	                const cursor = _v3C$1.copy(this._targetEnd)
+	                    .add(planeX.multiplyScalar(this._dollyControlCoord.x * worldToScreen * camera.aspect))
+	                    .add(planeY.multiplyScalar(this._dollyControlCoord.y * worldToScreen));
+	                const newTargetEnd = _v3A$1.copy(this._targetEnd).lerp(cursor, lerpRatio);
+	                const isMin = this._lastDollyDirection === DOLLY_DIRECTION.IN && this._spherical.radius <= this.minDistance;
+	                const isMax = this._lastDollyDirection === DOLLY_DIRECTION.OUT && this.maxDistance <= this._spherical.radius;
+	                if (this.infinityDolly && (isMin || isMax)) {
+	                    this._sphericalEnd.radius -= dollyControlAmount;
+	                    this._spherical.radius -= dollyControlAmount;
+	                    const dollyAmount = _v3B$1.copy(cameraDirection).multiplyScalar(-dollyControlAmount);
+	                    newTargetEnd.add(dollyAmount);
+	                }
+	                // target position may be moved beyond boundary.
+	                this._boundary.clampPoint(newTargetEnd, newTargetEnd);
+	                const targetEndDiff = _v3B$1.subVectors(newTargetEnd, this._targetEnd);
+	                this._targetEnd.copy(newTargetEnd);
+	                this._target.add(targetEndDiff);
+	                this._changedDolly -= dollyControlAmount;
+	                if (approxZero(this._changedDolly))
+	                    this._changedDolly = 0;
+	            }
+	            else if (isOrthographicCamera(this._camera) && this._changedZoom !== 0) {
+	                const dollyControlAmount = this._zoom - this._lastZoom;
+	                const camera = this._camera;
+	                const worldCursorPosition = _v3A$1.set(this._dollyControlCoord.x, this._dollyControlCoord.y, (camera.near + camera.far) / (camera.near - camera.far)).unproject(camera);
+	                const quaternion = _v3B$1.set(0, 0, -1).applyQuaternion(camera.quaternion);
+	                const cursor = _v3C$1.copy(worldCursorPosition).add(quaternion.multiplyScalar(-worldCursorPosition.dot(camera.up)));
+	                const prevZoom = this._zoom - dollyControlAmount;
+	                const lerpRatio = -(prevZoom - this._zoom) / this._zoom;
+	                // find the "distance" (aka plane constant in three.js) of Plane
+	                // from a given position (this._targetEnd) and normal vector (cameraDirection)
+	                // https://www.maplesoft.com/support/help/maple/view.aspx?path=MathApps%2FEquationOfAPlaneNormal#bkmrk0
+	                const cameraDirection = this._getCameraDirection(_cameraDirection);
+	                const prevPlaneConstant = this._targetEnd.dot(cameraDirection);
+	                const newTargetEnd = _v3A$1.copy(this._targetEnd).lerp(cursor, lerpRatio);
+	                const newPlaneConstant = newTargetEnd.dot(cameraDirection);
+	                // Pull back the camera depth that has moved, to be the camera stationary as zoom
+	                const pullBack = cameraDirection.multiplyScalar(newPlaneConstant - prevPlaneConstant);
+	                newTargetEnd.sub(pullBack);
+	                // target position may be moved beyond boundary.
+	                this._boundary.clampPoint(newTargetEnd, newTargetEnd);
+	                const targetEndDiff = _v3B$1.subVectors(newTargetEnd, this._targetEnd);
+	                this._targetEnd.copy(newTargetEnd);
+	                this._target.add(targetEndDiff);
+	                // this._target.copy( this._targetEnd );
+	                this._changedZoom -= dollyControlAmount;
+	                if (approxZero(this._changedZoom))
+	                    this._changedZoom = 0;
+	            }
+	        }
 	        if (this._camera.zoom !== this._zoom) {
 	            this._camera.zoom = this._zoom;
 	            this._camera.updateProjectionMatrix();
 	            this._updateNearPlaneCorners();
 	            this._needsUpdate = true;
 	        }
+	        this._dragNeedsUpdate = true;
 	        // collision detection
 	        const maxDistance = this._collisionTest();
 	        this._spherical.radius = Math.min(this._spherical.radius, maxDistance);
@@ -3385,6 +3490,8 @@
 	        else if (!updated && this._updatedLastTime) {
 	            this.dispatchEvent({ type: 'sleep' });
 	        }
+	        this._lastDistance = this._spherical.radius;
+	        this._lastZoom = this._zoom;
 	        this._updatedLastTime = updated;
 	        this._needsUpdate = false;
 	        return updated;
@@ -3466,6 +3573,7 @@
 	        }
 	        domElement.setAttribute('data-camera-controls-version', VERSION);
 	        this._addAllEventListeners(domElement);
+	        this._getClientRect(this._elementRect);
 	    }
 	    /**
 	     * Detach all internal event handlers to disable drag control.
@@ -3488,11 +3596,23 @@
 	        // remove all internal event listeners
 	        this.disconnect();
 	    }
+	    // it's okay to expose public though
+	    _getTargetDirection(out) {
+	        // divide by distance to normalize, lighter than `Vector3.prototype.normalize()`
+	        return out.setFromSpherical(this._spherical).divideScalar(this._spherical.radius).applyQuaternion(this._yAxisUpSpaceInverse);
+	    }
+	    // it's okay to expose public though
+	    _getCameraDirection(out) {
+	        return this._getTargetDirection(out).negate();
+	    }
 	    _findPointerById(pointerId) {
 	        return this._activePointers.find((activePointer) => activePointer.pointerId === pointerId);
 	    }
 	    _findPointerByMouseButton(mouseButton) {
 	        return this._activePointers.find((activePointer) => activePointer.mouseButton === mouseButton);
+	    }
+	    _disposePointer(pointer) {
+	        this._activePointers.splice(this._activePointers.indexOf(pointer), 1);
 	    }
 	    _encloseToBoundary(position, offset, friction) {
 	        const offsetLength2 = offset.lengthSq();
@@ -3553,14 +3673,13 @@
 	            return distance;
 	        if (notSupportedInOrthographicCamera(this._camera, '_collisionTest'))
 	            return distance;
-	        // divide by distance to normalize, lighter than `Vector3.prototype.normalize()`
-	        const direction = _v3A$1.setFromSpherical(this._spherical).divideScalar(this._spherical.radius);
-	        _rotationMatrix$1.lookAt(_ORIGIN$1, direction, this._camera.up);
+	        const rayDirection = this._getTargetDirection(_cameraDirection);
+	        _rotationMatrix$1.lookAt(_ORIGIN$1, rayDirection, this._camera.up);
 	        for (let i = 0; i < 4; i++) {
 	            const nearPlaneCorner = _v3B$1.copy(this._nearPlaneCorners[i]);
 	            nearPlaneCorner.applyMatrix4(_rotationMatrix$1);
 	            const origin = _v3C$1.addVectors(this._target, nearPlaneCorner);
-	            _raycaster.set(origin, direction);
+	            _raycaster.set(origin, rayDirection);
 	            _raycaster.far = this._spherical.radius + 1;
 	            const intersects = _raycaster.intersectObjects(this.colliderMeshes);
 	            if (intersects.length !== 0 && intersects[0].distance < distance) {
