@@ -4,6 +4,7 @@
   "author": "Yomotsu",
   "license": "MIT",
   "type": "module",
+  "types": "dist/index.d.ts",
   "main": "dist/meshwalk.js",
   "module": "dist/meshwalk.module.js",
   "repository": {
