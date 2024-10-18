@@ -43,11 +43,9 @@ export class AnimationController {
 	}
 
 	play(name: string) {
-
+		if (!this.motion[name]) return;
 		if (this.currentMotionName === name) return;
-
 		if (this.motion[this.currentMotionName]) {
-
 			const from = this.motion[this.currentMotionName].play();
 			const to = this.motion[name].play();
 
@@ -57,12 +55,8 @@ export class AnimationController {
 			from.crossFadeTo(to, .3, false);
 
 		} else {
-
-			if (this.motion[name]) {
-				this.motion[name].enabled = true;
-				this.motion[name].play();
-			}
-
+			this.motion[name].enabled = true;
+			this.motion[name].play();
 		}
 
 		this.currentMotionName = name;

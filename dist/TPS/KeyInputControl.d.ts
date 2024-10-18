@@ -1,6 +1,6 @@
 import { EventDispatcher } from '../core/EventDispatcher';
 export declare class KeyInputControl extends EventDispatcher {
-    private isDisabled;
+    isDisabled: boolean;
     private isUp;
     private isDown;
     private isLeft;

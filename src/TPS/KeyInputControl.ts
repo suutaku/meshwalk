@@ -22,7 +22,7 @@ const DEG_315 = 315 * DEG2RAD;
 
 export class KeyInputControl extends EventDispatcher {
 
-	private isDisabled = false;
+	public isDisabled = false;
 
 	private isUp = false;
 	private isDown = false;

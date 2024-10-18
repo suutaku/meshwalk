@@ -973,6 +973,10 @@
 	        this.position.set(x, y, z);
 	        this.object.position.copy(this.position);
 	    }
+	    turn(radian) {
+	        this.direction = radian;
+	        this.object.rotation.y = this.direction + Math.PI;
+	    }
 	}
 
 	const sphere = new three.Sphere();
@@ -1050,6 +1054,8 @@
 	        }
 	    }
 	    play(name) {
+	        if (!this.motion[name])
+	            return;
 	        if (this.currentMotionName === name)
 	            return;
 	        if (this.motion[this.currentMotionName]) {
@@ -3811,6 +3817,7 @@
 	class TPSCameraControls extends CameraControls {
 	    constructor(camera, trackObject, world, domElement) {
 	        super(camera, domElement);
+	        this.stopControl = false;
 	        this.minDistance = 1;
 	        this.maxDistance = 30;
 	        this.azimuthRotateSpeed = 0.3; // negative value to invert rotation direction
@@ -3828,10 +3835,12 @@
 	        // this.offset = new Vector3( 0, 1, 0 );
 	        const offset = new three.Vector3(0, 2, 0);
 	        this.update = (delta) => {
-	            const x = trackObject.position.x + offset.x;
-	            const y = trackObject.position.y + offset.y;
-	            const z = trackObject.position.z + offset.z;
-	            this.moveTo(x, y, z, false);
+	            if (!this.stopControl) {
+	                const x = trackObject.position.x + offset.x;
+	                const y = trackObject.position.y + offset.y;
+	                const z = trackObject.position.z + offset.z;
+	                this.moveTo(x, y, z, false);
+	            }
 	            return super.update(delta);
 	        };
 	    }

@@ -40,4 +40,5 @@ export declare class CharacterController extends EventDispatcher {
     jump(): void;
     _updateJumping(): void;
     teleport(x: number, y: number, z: number): void;
+    turn(radian: number): void;
 }
